@@ -1,0 +1,94 @@
+{
+  "entities": {
+    "Student": {
+      "title": "Student",
+      "description": "A student user of the platform.",
+      "type": "object",
+      "properties": {
+        "student_id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "course_id": { "type": "string" },
+        "isAdmin": { "type": "boolean" }
+      },
+      "required": ["student_id", "name", "email", "course_id"]
+    },
+    "Course": {
+      "title": "Course",
+      "description": "An academic course.",
+      "type": "object",
+      "properties": {
+        "course_id": { "type": "string" },
+        "course_name": { "type": "string" },
+        "course_duration": { "type": "string" }
+      },
+      "required": ["course_id", "course_name"]
+    },
+    "Exam": {
+      "title": "Exam",
+      "description": "An examination scheduled for a course.",
+      "type": "object",
+      "properties": {
+        "exam_id": { "type": "string" },
+        "exam_name": { "type": "string" },
+        "exam_date": { "type": "string", "format": "date" },
+        "exam_duration": { "type": "integer" },
+        "course_id": { "type": "string" },
+        "status": { "type": "string", "enum": ["Scheduled", "Live", "Completed"] }
+      },
+      "required": ["exam_id", "exam_name", "exam_date", "exam_duration", "course_id"]
+    },
+    "Question": {
+      "title": "Question",
+      "description": "A multiple-choice question for an exam.",
+      "type": "object",
+      "properties": {
+        "question_id": { "type": "string" },
+        "question_text": { "type": "string" },
+        "option_a": { "type": "string" },
+        "option_b": { "type": "string" },
+        "option_c": { "type": "string" },
+        "option_d": { "type": "string" },
+        "correct_option": { "type": "string", "enum": ["a", "b", "c", "d"] },
+        "exam_id": { "type": "string" }
+      },
+      "required": ["question_id", "question_text", "option_a", "option_b", "option_c", "option_d", "correct_option", "exam_id"]
+    },
+    "Result": {
+      "title": "Result",
+      "description": "A student's result for an exam.",
+      "type": "object",
+      "properties": {
+        "result_id": { "type": "string" },
+        "marks_obtained": { "type": "integer" },
+        "total_marks": { "type": "integer" },
+        "exam_status": { "type": "string", "enum": ["Pass", "Fail"] },
+        "student_id": { "type": "string" },
+        "exam_id": { "type": "string" },
+        "submitted_at": { "type": "string", "format": "date-time" },
+        "answers": { "type": "object" }
+      },
+      "required": ["result_id", "marks_obtained", "total_marks", "exam_status", "student_id", "exam_id", "submitted_at"]
+    },
+    "StudentExam": {
+      "title": "StudentExam",
+      "description": "Tracks a student's attempt status for an exam.",
+      "type": "object",
+      "properties": {
+        "student_id": { "type": "string" },
+        "exam_id": { "type": "string" },
+        "attempt_status": { "type": "string", "enum": ["Not Attempted", "In Progress", "Completed"] }
+      },
+      "required": ["student_id", "exam_id", "attempt_status"]
+    }
+  },
+  "firestore": {
+    "students": { "schema": "Student", "description": "Collection of student profiles." },
+    "courses": { "schema": "Course", "description": "Collection of academic courses." },
+    "exams": { "schema": "Exam", "description": "Collection of scheduled examinations." },
+    "questions": { "schema": "Question", "description": "Collection of exam questions." },
+    "results": { "schema": "Result", "description": "Collection of exam results." },
+    "student_exams": { "schema": "StudentExam", "description": "Tracks student exam attempts." }
+  }
+}
